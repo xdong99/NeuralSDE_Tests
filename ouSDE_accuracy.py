@@ -9,7 +9,7 @@ import os
 
 def get_data(batch_size, device):
     dataset_size = 8192
-    t_size = 128
+    t_size = 64
 
     class OrnsteinUhlenbeckSDE(torch.nn.Module):
         sde_type = 'ito'
@@ -184,7 +184,7 @@ def evaluate_loss(ts, batch_size, dataloader, generator, discriminator, method):
             total_loss += loss.item() * batch_size
     return total_loss / total_samples
 
-def plot(ts, generator, dataloader, num_plot_samples, plot_locs, method, save_dir = 'plots'):
+def plot(ts, generator, dataloader, num_plot_samples, plot_locs, method, save_dir = 'OUSDE_plots_64'):
     # Create a directory for saving plots if it doesn't exist
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
@@ -215,7 +215,7 @@ def plot(ts, generator, dataloader, num_plot_samples, plot_locs, method, save_di
         plt.ylabel('Density')
         plt.title(f'Marginal distribution at time {time}.')
         plt.tight_layout()
-        plt.savefig(os.path.join(save_dir, f'histogram_{method}_{prop}.png'))
+        plt.savefig(os.path.join(save_dir, f'histogram_{method}_{prop}_64.png'))
         plt.close()
 
     real_samples = real_samples[:num_plot_samples]
@@ -235,7 +235,7 @@ def plot(ts, generator, dataloader, num_plot_samples, plot_locs, method, save_di
     plt.legend()
     plt.title(f"{num_plot_samples} samples from both real and generated distributions.")
     plt.tight_layout()
-    plt.savefig(os.path.join(save_dir, f'sample_plot_{method}.png'))
+    plt.savefig(os.path.join(save_dir, f'sample_plot_{method}_64.png'))
     plt.close()
 
 def main(
